@@ -39,3 +39,6 @@ timezone = 'UTC'
 
 - Start application for development: `npm run dev`
 - Run tests: `npm test`
+
+
+to shoq tree : tree -I node_modules -d
