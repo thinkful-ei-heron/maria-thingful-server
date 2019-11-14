@@ -11,9 +11,23 @@ GET /api/things/:thing_id/reviews
 Assignment Questions:
 
 1. How are the syntaxes async and await useful when writing JavaScript code?
+
 2. With respect to Knex, how does the transaction method relate to BEGIN and COMMIT syntax in PostgreSQL?
+   If, partway through the transaction, we decide we do not want to commit (perhaps we just noticed that Alice's balance went negative),
+    we can issue the command ROLLBACK instead of COMMIT, and all our updates so far will be canceled.
+
 3. What is a "sequence table" in PostgreSQL?
+    he sequence is a special type of data created to generate unique numeric identifiers in the PostgreSQL 
+    database. Most often used for the creation of artificial primary keys, sequences are similar but not identical
+    to AUTO_INCREMENT in MySQL
+
 4. What does RESTART IDENTITY CASCADE do?
+    Truncate: empty a table or set of tables
+    RESTART IDENTITY: Automatically restart sequences owned by columns of the truncated table(s).
+    CASCADE: Automatically truncate all tables that have foreign-key references to any of the named
+    tables, or to any tables added to the group due to CASCADE.
+
+
 5. What does SELECT setval('blogful_users_id_seq', 1) do?
 
 
