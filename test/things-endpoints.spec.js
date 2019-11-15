@@ -19,7 +19,7 @@ describe.only('Things Endpoints', function() {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.TEST_DATABASE_URL,
     })
     app.set('db', db)
   })
@@ -31,7 +31,7 @@ describe.only('Things Endpoints', function() {
   afterEach('cleanup', () => helpers.cleanTables(db))
 
   //Adding Auth  Test: 
-  describe.only(`Protected endpoints`, () => {
+  describe(`Protected endpoints`, () => {
      beforeEach('insert things', () =>
        helpers.seedThingsTables(
          db,
@@ -146,10 +146,10 @@ describe.only('Things Endpoints', function() {
     })
   })
  //// START OF things/thing_id
-  describe.only(`GET /api/things/:thing_id`, () => {
+  describe(`GET /api/things/:thing_id`, () => {
     context(`Given no things`, () => {
         beforeEach(() =>
-          db.into('thingful_users').insert(testUsers)
+          helpers.seedUsers(db, testUsers)
         )
       it(`responds with 404`, () => {
         const thingId = 123456
@@ -216,7 +216,7 @@ describe.only('Things Endpoints', function() {
   describe(`GET /api/things/:thing_id/reviews`, () => {
     context(`Given no things`, () => {
       beforeEach(() =>
-       db.into('thingful_users').insert(testUsers)
+        helpers.seedUsers(db, testUsers)
       )
       it(`responds with 404`, () => {
         const thingId = 123456
