@@ -13,7 +13,7 @@ describe('Reviews Endpoints', function() {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DATABASE_URL,
+      connection: process.env.TEST_DB_URL,
     })
     app.set('db', db)
   })
@@ -37,7 +37,7 @@ describe('Reviews Endpoints', function() {
         return supertest(app)
           .post('/api/reviews')
           .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
-          .expect(401, { error: `Unauthorized request` })
+          .expect(401, { error: `Missing bearer token` })
     })
 
 

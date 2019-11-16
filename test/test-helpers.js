@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 function makeUsersArray() {
   return [
@@ -168,7 +169,7 @@ function calculateAverageReviewRating(reviews) {
 
   const sum = reviews
     .map(review => review.rating)
-    .reduce((a, b) => a + b)
+    .reduce((a, b) => a,b)
 
   return Math.round(sum / reviews.length)
 }
@@ -231,16 +232,7 @@ function cleanTables(db) {
       RESTART IDENTITY CASCADE`
   )
 
-  .then(() =>
-  Promise.all([
-    trx.raw(`ALTER SEQUENCE thingful_thing_id_seq minvalue 0 START WITH 1`),
-    trx.raw(`ALTER SEQUENCE thingful_users_id_seq minvalue 0 START WITH 1`),
-    trx.raw(`ALTER SEQUENCE thingful_reviews_id_seq minvalue 0 START WITH 1`),
-    trx.raw(`SELECT setval('thingful_thing_id_seq', 0)`),
-    trx.raw(`SELECT setval('thingful_users_id_seq', 0)`),
-    trx.raw(`SELECT setval('thingful_reviews_id_seq', 0)`),
-  ])
-}
+};
 // for encrypting password tests
 function seedUsers(db, users) {
   const preppedUsers = users.map(user => ({
@@ -284,8 +276,11 @@ function seedMaliciousThing(db, user, thing) {
     )
 }
 
-function makeAuthHeader(user) {
-   const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+        subject: user.user_name,
+        algorithm: 'HS256',
+      })
     return `Basic ${token}`
   }
 
